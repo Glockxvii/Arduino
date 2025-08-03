@@ -58,60 +58,6 @@ unsigned long nowTime; // non negative numbers going to almost 5bil. used with m
 unsigned long lastTime = 0;
 unsigned long waitTime = 500;
 
-void appendKey(char key) {
-  if (bufferLength < 16) {
-    buffer[bufferLength] = key; // append key input
-    bufferLength++; // increase length
-    buffer[bufferLength] = '\0'; // Adds a STOP sign after each input, so the computer knows to stop reading after the last input
-  }
-  else if (bufferLength == 16) {
-    for (int i = 15; i > 0; i--) {
-      buffer[i] = buffer[i - 1];
-    }
-  buffer[0] = key;
-  }
-}
-
-void screenFullWarning() {
-
-  for (int i=0; i < 5; i++) {
-  lcd.setCursor(0, 0);
-  lcd.print("Screen Full.");
-  delay(200);
-
-  lcd.setCursor(0, 0);
-  lcd.print("                ");
-  delay(50);
-
-  lcd.setCursor(0, 0);
-  lcd.print("Screen Full..");
-  delay(200);
-
-  lcd.setCursor(0, 0);
-  lcd.print("                ");
-  delay(50);
-
-  lcd.setCursor(0, 0);
-  lcd.print("Screen Full...");
-  delay(200);
-
-  lcd.setCursor(0, 0);
-  lcd.print("                ");
-  delay(100);
-  }
-  
-  lcd.setCursor(0, 0);
-  lcd.print("Press any Key");
-  delay(1000);
-
-  lcd.setCursor(0, 0);
-  lcd.print("                ");
-  delay(100);
-
-  lcd.setCursor(0, 0);
-  lcd.print("To Overwrite");
-  delay(1000);
-}
 
 void lcdDisplayLogic(char key) {
   if (key) {
