@@ -10,14 +10,14 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 const byte ROWS = 4;
 const byte COLS = 4;
 
-// Connect rows to arduino pins
+// Connect keypad rows to arduino pins
 byte rowPins[ROWS] = {2, 3, 4, 5};
 
-// Connect colums to arduino pins
+// Connect keypad colums to arduino pins
 byte colPins[COLS] = {6, A0, A1, A2};
 
 
-// Connect LCD Matrix Display
+// Connect LED Matrix Display
 int DIN_PIN = A3; // Data in
 int CS_PIN = A4; // Chip Select (Load)
 int CLK_PIN = A5; // Clock
@@ -132,7 +132,7 @@ void lcdMatrixLogic(char key) {
 void setup() {
   Serial.begin(9600);
   lcd.begin(16, 2); // initialize the lcd (16 rows 2 colums)
-  lc.shutdown(0, false); // Wake up the LCD Matrix display, 0 = first device, false = turn off shutdown mode
+  lc.shutdown(0, false); // Wake up the LED Matrix display, 0 = first device, false = turn off shutdown mode
   lc.setIntensity(0, 0); // Brightness (0-15) 0=first device
   lc.clearDisplay(0); // Clear Display, 0=first device
 }
