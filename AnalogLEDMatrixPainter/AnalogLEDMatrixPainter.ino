@@ -168,10 +168,12 @@ void deleteButton(){
 
   
 
+
+
 void buttonLogic(){
   // Check if button has been clicked variables
   static bool hasClicked = false;
-  static int lastClick=0;
+  static int lastClick=HIGH;
   int currentClick = digitalRead(Button_pin);
   // Timing variables
   static unsigned long previousTime;
@@ -179,20 +181,14 @@ void buttonLogic(){
   static unsigned long delayTime = 150;
 
   // Check if clicked Logic
-  if (lastClick==HIGH && currentClick==LOW){
-    
+  if (currentClick != lastClick){
       if (paintedIndex < maxDots){
         if (nowTime-previousTime >=delayTime){
         dotRowArray[paintedIndex]=dotRow;
         dotColArray[paintedIndex]=dotCol;
-        paintedIndex++;
-        }
-        previousTime=nowTime;
-      }
-  
-  }
-  lastClick=currentClick;
-  
+        paintedIndex++;}
+        previousTime=nowTime;}
+  } 
 }
 
 void LCDinfoScreen(){
@@ -217,10 +213,15 @@ void matrixDot(){
   static bool hasBeenClicked = false;
   static int lastState = 0;
 
+  // Draw painted dots
+  lc.clearDisplay(0);
+  for (int i=0;i<paintedIndex;i++){
+    lc.setLed(0, dotRowArray[i], dotColArray[i], true);
+  }
+  // Dot movement speed
   if (currentState != lastState){
     if(currentState==LOW){
       hasBeenClicked=!hasBeenClicked;
-
       }
     lastState=currentState;
     
@@ -231,9 +232,9 @@ void matrixDot(){
     else{
       moveDelay=150;
     }
-  
+  // Dot Location on screen
   if(currentTime - lastMoveTime >= moveDelay){
-    lastMoveTime = currentTime;
+
     lc.setLed(0,dotRow,dotCol,false);
     if (xAxis <350 && dotRow > 0){ // Move Left
       dotRow--;
@@ -254,11 +255,15 @@ void matrixDot(){
       dotCol--;
       Serial.print("Move Down");
     }
-    lc.setLed(0,dotRow,dotCol,true);
+    
+    lastMoveTime = currentTime;
+  }
+  lc.setLed(0,dotRow,dotCol,true);
+  
     
     // Delete dot on second click
     
-  }
+    
 }
 
 void loop() {
