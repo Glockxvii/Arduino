@@ -184,11 +184,34 @@ void buttonLogic(){
   if (currentClick != lastClick){
       if (paintedIndex < maxDots){
         if (nowTime-previousTime >=delayTime){
+
+          // Check if spot taken
+          bool found = false;
+          for(int i=0; i<paintedIndex; i++){
+            if(dotRowArray[i]==dotRow && dotColArray[i]==dotCol){
+              // Remove dot
+              for (int j=i; j<paintedIndex - 1; j++){
+                dotRowArray[j] = dotRowArray[j+1];
+                dotColArray[j] = dotColArray[j+1];
+              }
+              paintedIndex--;
+              //Turn off LED
+              lc.setLed(0,dotRow,dotCol,false);
+              found=true;
+              break;
+            }
+          }
+        if (found==false){
         dotRowArray[paintedIndex]=dotRow;
         dotColArray[paintedIndex]=dotCol;
-        paintedIndex++;}
-        previousTime=nowTime;}
-  } 
+        paintedIndex++;
+        }
+        
+        previousTime=nowTime;
+} 
+}
+}
+lastClick=currentClick;
 }
 
 void LCDinfoScreen(){
@@ -212,6 +235,9 @@ void matrixDot(){
   // Button click
   static bool hasBeenClicked = false;
   static int lastState = 0;
+
+  // Check if already drawn
+  
 
   // Draw painted dots
   lc.clearDisplay(0);
